@@ -18,6 +18,7 @@ void main() {
     posterPath: "/path.jpg",
     releaseDate: "2020-05-05",
     title: "Title",
+    name: null,
     video: false,
     voteAverage: 1.0,
     voteCount: 1,
@@ -28,7 +29,7 @@ void main() {
     test('should return a valid model from JSON', () async {
       // arrange
       final Map<String, dynamic> jsonMap =
-          json.decode(readJson('dummy_data/now_playing.json'));
+          json.decode(readJson('dummy_data/movie_now_playing.json'));
       // act
       final result = MovieResponse.fromJson(jsonMap);
       // assert
@@ -56,6 +57,7 @@ void main() {
             "poster_path": "/path.jpg",
             "release_date": "2020-05-05",
             "title": "Title",
+            "name": null,
             "video": false,
             "vote_average": 1.0,
             "vote_count": 1

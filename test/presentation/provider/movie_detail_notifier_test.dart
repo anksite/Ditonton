@@ -1,13 +1,15 @@
 import 'package:dartz/dartz.dart';
+import 'package:ditonton/common/failure.dart';
+import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/usecases/get_movie_detail.dart';
 import 'package:ditonton/domain/usecases/get_movie_recommendations.dart';
-import 'package:ditonton/common/failure.dart';
+import 'package:ditonton/domain/usecases/get_tv_detail.dart';
+import 'package:ditonton/domain/usecases/get_tv_recommendations.dart';
 import 'package:ditonton/domain/usecases/get_watchlist_status.dart';
 import 'package:ditonton/domain/usecases/remove_watchlist.dart';
 import 'package:ditonton/domain/usecases/save_watchlist.dart';
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
-import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/presentation/detail/movie_detail_notifier.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -18,6 +20,8 @@ import 'movie_detail_notifier_test.mocks.dart';
 @GenerateMocks([
   GetMovieDetail,
   GetMovieRecommendations,
+  GetTvDetail,
+  GetTvRecommendations,
   GetWatchListStatus,
   SaveWatchlist,
   RemoveWatchlist,
@@ -26,6 +30,8 @@ void main() {
   late MovieDetailNotifier provider;
   late MockGetMovieDetail mockGetMovieDetail;
   late MockGetMovieRecommendations mockGetMovieRecommendations;
+  late MockGetTvDetail mockGetTvDetail;
+  late MockGetTvRecommendations mockGetTvRecommendations;
   late MockGetWatchListStatus mockGetWatchlistStatus;
   late MockSaveWatchlist mockSaveWatchlist;
   late MockRemoveWatchlist mockRemoveWatchlist;
@@ -35,12 +41,16 @@ void main() {
     listenerCallCount = 0;
     mockGetMovieDetail = MockGetMovieDetail();
     mockGetMovieRecommendations = MockGetMovieRecommendations();
+    mockGetTvDetail = MockGetTvDetail();
+    mockGetTvRecommendations = MockGetTvRecommendations();
     mockGetWatchlistStatus = MockGetWatchListStatus();
     mockSaveWatchlist = MockSaveWatchlist();
     mockRemoveWatchlist = MockRemoveWatchlist();
     provider = MovieDetailNotifier(
       getMovieDetail: mockGetMovieDetail,
       getMovieRecommendations: mockGetMovieRecommendations,
+      getTvDetail: mockGetTvDetail,
+      getTvRecommendations: mockGetTvRecommendations,
       getWatchListStatus: mockGetWatchlistStatus,
       saveWatchlist: mockSaveWatchlist,
       removeWatchlist: mockRemoveWatchlist,
@@ -62,17 +72,43 @@ void main() {
     posterPath: 'posterPath',
     releaseDate: 'releaseDate',
     title: 'title',
+    name: null,
     video: false,
     voteAverage: 1,
     voteCount: 1,
   );
   final tMovies = <Movie>[tMovie];
 
+  final tMovieTv = Movie(
+    adult: false,
+    backdropPath: 'backdropPath',
+    genreIds: [1, 2, 3],
+    id: 1,
+    originalTitle: null,
+    overview: 'overview',
+    popularity: 1,
+    posterPath: 'posterPath',
+    releaseDate: null,
+    title: null,
+    name: 'name',
+    video: null,
+    voteAverage: 1,
+    voteCount: 1,
+  );
+  final tMoviesTv = <Movie>[tMovieTv];
+
   void _arrangeUsecase() {
     when(mockGetMovieDetail.execute(tId))
         .thenAnswer((_) async => Right(testMovieDetail));
     when(mockGetMovieRecommendations.execute(tId))
         .thenAnswer((_) async => Right(tMovies));
+  }
+
+  void _arrangeUsecaseTv() {
+    when(mockGetTvDetail.execute(tId))
+        .thenAnswer((_) async => Right(testTvDetail));
+    when(mockGetTvRecommendations.execute(tId))
+        .thenAnswer((_) async => Right(tMoviesTv));
   }
 
   group('Get Movie Detail', () {
@@ -149,6 +185,86 @@ void main() {
           .thenAnswer((_) async => Left(ServerFailure('Failed')));
       // act
       await provider.fetchMovieDetail(tId);
+      // assert
+      expect(provider.recommendationState, RequestState.Error);
+      expect(provider.message, 'Failed');
+    });
+  });
+
+  group('Get Tv Detail', () {
+    test('should get data from the usecase', () async {
+      // arrange
+      _arrangeUsecaseTv();
+      // act
+      await provider.fetchTvDetail(tId);
+      // assert
+      verify(mockGetTvDetail.execute(tId));
+      verify(mockGetTvRecommendations.execute(tId));
+    });
+
+    test('should change state to Loading when usecase is called', () {
+      // arrange
+      _arrangeUsecaseTv();
+      // act
+      provider.fetchTvDetail(tId);
+      // assert
+      expect(provider.movieState, RequestState.Loading);
+      expect(listenerCallCount, 1);
+    });
+
+    test('should change movie when data is gotten successfully', () async {
+      // arrange
+      _arrangeUsecaseTv();
+      // act
+      await provider.fetchTvDetail(tId);
+      // assert
+      expect(provider.movieState, RequestState.Loaded);
+      expect(provider.movie, testTvDetail);
+      expect(listenerCallCount, 3);
+    });
+
+    test('should change recommendation movies when data is gotten successfully',
+        () async {
+      // arrange
+      _arrangeUsecaseTv();
+      // act
+      await provider.fetchTvDetail(tId);
+      // assert
+      expect(provider.movieState, RequestState.Loaded);
+      expect(provider.movieRecommendations, tMoviesTv);
+    });
+  });
+
+  group('Get Tv Recommendations', () {
+    test('should get data from the usecase', () async {
+      // arrange
+      _arrangeUsecaseTv();
+      // act
+      await provider.fetchTvDetail(tId);
+      // assert
+      verify(mockGetTvRecommendations.execute(tId));
+      expect(provider.movieRecommendations, tMoviesTv);
+    });
+
+    test('should update recommendation state when data is gotten successfully',
+        () async {
+      // arrange
+      _arrangeUsecaseTv();
+      // act
+      await provider.fetchTvDetail(tId);
+      // assert
+      expect(provider.recommendationState, RequestState.Loaded);
+      expect(provider.movieRecommendations, tMoviesTv);
+    });
+
+    test('should update error message when request in successful', () async {
+      // arrange
+      when(mockGetTvDetail.execute(tId))
+          .thenAnswer((_) async => Right(testTvDetail));
+      when(mockGetTvRecommendations.execute(tId))
+          .thenAnswer((_) async => Left(ServerFailure('Failed')));
+      // act
+      await provider.fetchTvDetail(tId);
       // assert
       expect(provider.recommendationState, RequestState.Error);
       expect(provider.message, 'Failed');

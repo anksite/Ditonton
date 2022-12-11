@@ -1,22 +1,20 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
-import 'package:ditonton/presentation/pages/about_page.dart';
-import 'package:ditonton/presentation/pages/movie_detail_page.dart';
-import 'package:ditonton/presentation/pages/home_movie_page.dart';
-import 'package:ditonton/presentation/pages/popular_movies_page.dart';
-import 'package:ditonton/presentation/pages/search_page.dart';
-import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
-import 'package:ditonton/presentation/pages/watchlist_movies_page.dart';
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
-import 'package:ditonton/presentation/provider/movie_search_notifier.dart';
-import 'package:ditonton/presentation/provider/popular_movies_notifier.dart';
-import 'package:ditonton/presentation/provider/top_rated_movies_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
+import 'package:ditonton/injection.dart' as di;
+import 'package:ditonton/presentation/about/about_page.dart';
+import 'package:ditonton/presentation/detail/movie_detail_notifier.dart';
+import 'package:ditonton/presentation/detail/movie_detail_page.dart';
+import 'package:ditonton/presentation/home/home_movie_page.dart';
+import 'package:ditonton/presentation/home/movie_list_notifier.dart';
+import 'package:ditonton/presentation/list_more/list_more_notifier.dart';
+import 'package:ditonton/presentation/list_more/list_more_page.dart';
+import 'package:ditonton/presentation/search/movie_search_notifier.dart';
+import 'package:ditonton/presentation/search/search_page.dart';
+import 'package:ditonton/presentation/watchlist/watchlist_movie_notifier.dart';
+import 'package:ditonton/presentation/watchlist/watchlist_movies_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ditonton/injection.dart' as di;
 
 void main() {
   di.init();
@@ -38,10 +36,7 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<MovieSearchNotifier>(),
         ),
         ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedMoviesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularMoviesNotifier>(),
+          create: (_) => di.locator<ListMoreNotifier>(),
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<WatchlistMovieNotifier>(),
@@ -61,22 +56,35 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case '/home':
               return MaterialPageRoute(builder: (_) => HomeMoviePage());
-            case PopularMoviesPage.ROUTE_NAME:
-              return CupertinoPageRoute(builder: (_) => PopularMoviesPage());
-            case TopRatedMoviesPage.ROUTE_NAME:
-              return CupertinoPageRoute(builder: (_) => TopRatedMoviesPage());
-            case MovieDetailPage.ROUTE_NAME:
-              final id = settings.arguments as int;
+
+            case ListMorePage.ROUTE_NAME:
+              final showedList = settings.arguments as String;
               return MaterialPageRoute(
-                builder: (_) => MovieDetailPage(id: id),
+                  builder: (_) => ListMorePage(showedList: showedList),
+                  settings: settings);
+
+            case MovieDetailPage.ROUTE_NAME:
+              final arg = settings.arguments as List<String>;
+              return MaterialPageRoute(
+                builder: (_) => MovieDetailPage(arguments: arg),
                 settings: settings,
               );
+
             case SearchPage.ROUTE_NAME:
-              return CupertinoPageRoute(builder: (_) => SearchPage());
+              final kind = settings.arguments as String;
+              return MaterialPageRoute(
+                  builder: (_) => SearchPage(
+                        mKind: kind,
+                      ));
+
             case WatchlistMoviesPage.ROUTE_NAME:
-              return MaterialPageRoute(builder: (_) => WatchlistMoviesPage());
+              final kind = settings.arguments as String;
+              return MaterialPageRoute(
+                  builder: (_) => WatchlistMoviesPage(mKind: kind));
+
             case AboutPage.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => AboutPage());
+
             default:
               return MaterialPageRoute(builder: (_) {
                 return Scaffold(

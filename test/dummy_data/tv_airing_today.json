@@ -1,0 +1,28 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "backdrop_path": "/wR3jtz2StAwocO9ANKP7ELUfkcW.jpg",
+      "first_air_date": "2022-05-30",
+      "genre_ids": [
+        18,
+        10751,
+        10766
+      ],
+      "id": 203887,
+      "name": "Banni Chow Home Delivery",
+      "origin_country": [
+        "IN"
+      ],
+      "original_language": "hi",
+      "original_name": "Banni Chow Home Delivery",
+      "overview": "Self-sufficient Banni runs her meal delivery service. However, her life turns upside down when she is tasked with feeding a rich but emotionally unstable Yuvan.",
+      "popularity": 1387.318,
+      "poster_path": "/lc75BdFIIrdgDjmj3nX0BU1Uyot.jpg",
+      "vote_average": 0,
+      "vote_count": 0
+    }
+  ],
+  "total_pages": 10,
+  "total_results": 183
+}

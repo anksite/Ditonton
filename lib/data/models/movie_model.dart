@@ -13,22 +13,24 @@ class MovieModel extends Equatable {
     required this.posterPath,
     required this.releaseDate,
     required this.title,
+    required this.name,
     required this.video,
     required this.voteAverage,
     required this.voteCount,
   });
 
-  final bool adult;
+  final bool? adult;
   final String? backdropPath;
   final List<int> genreIds;
   final int id;
-  final String originalTitle;
+  final String? originalTitle;
   final String overview;
   final double popularity;
   final String? posterPath;
   final String? releaseDate;
-  final String title;
-  final bool video;
+  final String? title;
+  final String? name;
+  final bool? video;
   final double voteAverage;
   final int voteCount;
 
@@ -43,6 +45,7 @@ class MovieModel extends Equatable {
         posterPath: json["poster_path"],
         releaseDate: json["release_date"],
         title: json["title"],
+        name: json["name"],
         video: json["video"],
         voteAverage: json["vote_average"].toDouble(),
         voteCount: json["vote_count"],
@@ -59,6 +62,7 @@ class MovieModel extends Equatable {
         "poster_path": posterPath,
         "release_date": releaseDate,
         "title": title,
+        "name": name,
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
@@ -76,6 +80,7 @@ class MovieModel extends Equatable {
       posterPath: this.posterPath,
       releaseDate: this.releaseDate,
       title: this.title,
+      name: this.name,
       video: this.video,
       voteAverage: this.voteAverage,
       voteCount: this.voteCount,
@@ -94,6 +99,7 @@ class MovieModel extends Equatable {
         posterPath,
         releaseDate,
         title,
+        name,
         video,
         voteAverage,
         voteCount,

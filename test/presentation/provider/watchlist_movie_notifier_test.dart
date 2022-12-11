@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/failure.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/usecases/get_watchlist_movies.dart';
-import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
+import 'package:ditonton/presentation/watchlist/watchlist_movie_notifier.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -28,10 +29,10 @@ void main() {
 
   test('should change movies data when data is gotten successfully', () async {
     // arrange
-    when(mockGetWatchlistMovies.execute())
+    when(mockGetWatchlistMovies.execute(MOVIE))
         .thenAnswer((_) async => Right([testWatchlistMovie]));
     // act
-    await provider.fetchWatchlistMovies();
+    await provider.fetchWatchlistMovies(MOVIE);
     // assert
     expect(provider.watchlistState, RequestState.Loaded);
     expect(provider.watchlistMovies, [testWatchlistMovie]);
@@ -40,10 +41,10 @@ void main() {
 
   test('should return error when data is unsuccessful', () async {
     // arrange
-    when(mockGetWatchlistMovies.execute())
+    when(mockGetWatchlistMovies.execute(MOVIE))
         .thenAnswer((_) async => Left(DatabaseFailure("Can't get data")));
     // act
-    await provider.fetchWatchlistMovies();
+    await provider.fetchWatchlistMovies(MOVIE);
     // assert
     expect(provider.watchlistState, RequestState.Error);
     expect(provider.message, "Can't get data");

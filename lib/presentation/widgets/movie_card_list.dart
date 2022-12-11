@@ -1,13 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/movie.dart';
-import 'package:ditonton/presentation/pages/movie_detail_page.dart';
+import 'package:ditonton/presentation/detail/movie_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
+  late String kind;
 
-  MovieCard(this.movie);
+  MovieCard(this.movie) {
+    if (movie.title != null) {
+      kind = MOVIE;
+    } else {
+      kind = TV;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +25,7 @@ class MovieCard extends StatelessWidget {
           Navigator.pushNamed(
             context,
             MovieDetailPage.ROUTE_NAME,
-            arguments: movie.id,
+            arguments: [movie.id.toString(), kind],
           );
         },
         child: Stack(
@@ -35,7 +42,7 @@ class MovieCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      movie.title ?? '-',
+                      movie.title ?? movie.name ?? '-',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: kHeading6,

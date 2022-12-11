@@ -4,9 +4,12 @@ import 'package:ditonton/data/models/movie_table.dart';
 
 abstract class MovieLocalDataSource {
   Future<String> insertWatchlist(MovieTable movie);
+
   Future<String> removeWatchlist(MovieTable movie);
+
   Future<MovieTable?> getMovieById(int id);
-  Future<List<MovieTable>> getWatchlistMovies();
+
+  Future<List<MovieTable>> getWatchlistMovies(String kind);
 }
 
 class MovieLocalDataSourceImpl implements MovieLocalDataSource {
@@ -45,8 +48,8 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
   }
 
   @override
-  Future<List<MovieTable>> getWatchlistMovies() async {
-    final result = await databaseHelper.getWatchlistMovies();
+  Future<List<MovieTable>> getWatchlistMovies(String kind) async {
+    final result = await databaseHelper.getWatchlistMovies(kind);
     return result.map((data) => MovieTable.fromMap(data)).toList();
   }
 }

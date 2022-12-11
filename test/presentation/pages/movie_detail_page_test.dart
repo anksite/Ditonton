@@ -1,7 +1,8 @@
+import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/movie.dart';
-import 'package:ditonton/presentation/pages/movie_detail_page.dart';
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
+import 'package:ditonton/presentation/detail/movie_detail_notifier.dart';
+import 'package:ditonton/presentation/detail/movie_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -39,7 +40,8 @@ void main() {
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(
+        _makeTestableWidget(MovieDetailPage(arguments: ["1", MOVIE])));
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -55,7 +57,8 @@ void main() {
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(
+        _makeTestableWidget(MovieDetailPage(arguments: ["1", MOVIE])));
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -72,7 +75,8 @@ void main() {
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(
+        _makeTestableWidget(MovieDetailPage(arguments: ["1", MOVIE])));
 
     expect(find.byIcon(Icons.add), findsOneWidget);
 
@@ -95,7 +99,8 @@ void main() {
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(
+        _makeTestableWidget(MovieDetailPage(arguments: ["1", MOVIE])));
 
     expect(find.byIcon(Icons.add), findsOneWidget);
 
@@ -104,5 +109,19 @@ void main() {
 
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.text('Failed'), findsOneWidget);
+  });
+
+  testWidgets('Duration text should not have data when displaying tv detail',
+      (WidgetTester tester) async {
+    when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movie).thenReturn(testTvDetail);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
+    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+
+    await tester
+        .pumpWidget(_makeTestableWidget(MovieDetailPage(arguments: ["1", TV])));
+
+    expect(find.text(''), findsOneWidget);
   });
 }

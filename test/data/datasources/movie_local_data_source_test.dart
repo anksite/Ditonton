@@ -1,3 +1,4 @@
+import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/exception.dart';
 import 'package:ditonton/data/datasources/movie_local_data_source.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -87,12 +88,12 @@ void main() {
   });
 
   group('get watchlist movies', () {
-    test('should return list of MovieTable from database', () async {
+    test('should return list of movies from database', () async {
       // arrange
-      when(mockDatabaseHelper.getWatchlistMovies())
+      when(mockDatabaseHelper.getWatchlistMovies(MOVIE))
           .thenAnswer((_) async => [testMovieMap]);
       // act
-      final result = await dataSource.getWatchlistMovies();
+      final result = await dataSource.getWatchlistMovies(MOVIE);
       // assert
       expect(result, [testMovieTable]);
     });

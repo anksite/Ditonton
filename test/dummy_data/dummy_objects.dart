@@ -15,6 +15,7 @@ final testMovie = Movie(
   posterPath: '/rweIrveL43TaxUN0akQEaAXL6x0.jpg',
   releaseDate: '2002-05-01',
   title: 'Spider-Man',
+  name: null,
   video: false,
   voteAverage: 7.2,
   voteCount: 13507,
@@ -33,6 +34,23 @@ final testMovieDetail = MovieDetail(
   releaseDate: 'releaseDate',
   runtime: 120,
   title: 'title',
+  name: null,
+  voteAverage: 1,
+  voteCount: 1,
+);
+
+final testTvDetail = MovieDetail(
+  adult: false,
+  backdropPath: 'backdropPath',
+  genres: [Genre(id: 1, name: 'Action')],
+  id: 1,
+  originalTitle: null,
+  overview: 'overview',
+  posterPath: 'posterPath',
+  releaseDate: null,
+  runtime: null,
+  title: null,
+  name: "name",
   voteAverage: 1,
   voteCount: 1,
 );
@@ -40,6 +58,7 @@ final testMovieDetail = MovieDetail(
 final testWatchlistMovie = Movie.watchlist(
   id: 1,
   title: 'title',
+  name: null,
   posterPath: 'posterPath',
   overview: 'overview',
 );
@@ -47,6 +66,7 @@ final testWatchlistMovie = Movie.watchlist(
 final testMovieTable = MovieTable(
   id: 1,
   title: 'title',
+  name: null,
   posterPath: 'posterPath',
   overview: 'overview',
 );
@@ -56,4 +76,5 @@ final testMovieMap = {
   'overview': 'overview',
   'posterPath': 'posterPath',
   'title': 'title',
+  'name': null,
 };

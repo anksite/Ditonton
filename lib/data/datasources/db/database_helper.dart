@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:ditonton/data/models/movie_table.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../../common/constants.dart';
+
 class DatabaseHelper {
   static DatabaseHelper? _databaseHelper;
+
   DatabaseHelper._instance() {
     _databaseHelper = this;
   }
@@ -35,6 +38,7 @@ class DatabaseHelper {
       CREATE TABLE  $_tblWatchlist (
         id INTEGER PRIMARY KEY,
         title TEXT,
+        name TEXT,
         overview TEXT,
         posterPath TEXT
       );
@@ -70,9 +74,15 @@ class DatabaseHelper {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getWatchlistMovies() async {
+  Future<List<Map<String, dynamic>>> getWatchlistMovies(String kind) async {
     final db = await database;
-    final List<Map<String, dynamic>> results = await db!.query(_tblWatchlist);
+    final List<Map<String, dynamic>> results;
+
+    if (kind == MOVIE) {
+      results = await db!.query(_tblWatchlist, where: 'name is null');
+    } else {
+      results = await db!.query(_tblWatchlist, where: 'title is null');
+    }
 
     return results;
   }

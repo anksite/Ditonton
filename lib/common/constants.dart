@@ -12,18 +12,23 @@ const Color kDavysGrey = Color(0xFF4B5358);
 const Color kGrey = Color(0xFF303030);
 
 // text style
-final TextStyle kHeading5 =
-    GoogleFonts.poppins(fontSize: 23, fontWeight: FontWeight.w400, color: Color(
-        0xFFFFFFFF));
+final TextStyle kHeading5 = GoogleFonts.poppins(
+    fontSize: 23, fontWeight: FontWeight.w400, color: Color(0xFFFFFFFF));
 final TextStyle kHeading6 = GoogleFonts.poppins(
-    fontSize: 19, fontWeight: FontWeight.w500, letterSpacing: 0.15, color: Color(
-    0xFFFFFFFF));
+    fontSize: 19,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.15,
+    color: Color(0xFFFFFFFF));
 final TextStyle kSubtitle = GoogleFonts.poppins(
-    fontSize: 15, fontWeight: FontWeight.w400, letterSpacing: 0.15, color: Color(
-    0xFFFFFFFF));
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.15,
+    color: Color(0xFFFFFFFF));
 final TextStyle kBodyText = GoogleFonts.poppins(
-    fontSize: 13, fontWeight: FontWeight.w400, letterSpacing: 0.25, color: Color(
-    0xFFFFFFFF));
+    fontSize: 13,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.25,
+    color: Color(0xFFFFFFFF));
 
 // text theme
 final kTextTheme = TextTheme(
@@ -48,3 +53,15 @@ const kColorScheme = ColorScheme(
   onError: Colors.white,
   brightness: Brightness.dark,
 );
+
+//param
+const String MOVIE_NOW_PLAYING = "movieNowPlaying";
+const String MOVIE_POPULAR = "moviePopular";
+const String MOVIE_TOP_RATED = "movieTopRated";
+const String TV_AIRING_TODAY = "tvAiringToday";
+const String TV_POPULAR = "tvPopular";
+const String TV_TOP_RATED = "tvTopRated";
+
+//kind
+const String MOVIE = "movie";
+const String TV = "tv";
