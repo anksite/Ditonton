@@ -59,16 +59,25 @@ class SearchPage extends StatelessWidget {
                   );
                 } else if (data.state == RequestState.Loaded) {
                   final result = data.searchResult;
-                  return Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(8),
-                      itemBuilder: (context, index) {
-                        final movie = data.searchResult[index];
-                        return MovieCard(movie);
-                      },
-                      itemCount: result.length,
-                    ),
-                  );
+                  if(result.length==0){
+                    return Expanded(
+                      child: Center(
+                        child: Text("No data", style: kSubtitle),
+                      ),
+                    );
+                  } else {
+                    return Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(8),
+                        itemBuilder: (context, index) {
+                          final movie = data.searchResult[index];
+                          return MovieCard(movie);
+                        },
+                        itemCount: result.length,
+                      ),
+                    );
+                  }
+
                 } else {
                   return Expanded(
                     child: Container(),

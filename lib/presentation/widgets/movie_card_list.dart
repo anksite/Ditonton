@@ -6,18 +6,17 @@ import 'package:flutter/material.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
-  late String kind;
+  late final String kind;
 
-  MovieCard(this.movie) {
+  MovieCard(this.movie);
+
+  @override
+  Widget build(BuildContext context) {
     if (movie.title != null) {
       kind = MOVIE;
     } else {
       kind = TV;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
