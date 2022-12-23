@@ -1,10 +1,10 @@
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/list_more/list_more_notifier.dart';
 import 'package:ditonton/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/constants.dart';
+import 'bloc/list_more_bloc.dart';
 
 class ListMorePage extends StatefulWidget {
   static const ROUTE_NAME = '/popular-movie';
@@ -20,8 +20,8 @@ class _ListMorePageState extends State<ListMorePage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<ListMoreNotifier>(context, listen: false)
-        .fetchMovies(widget.showedList));
+    Provider.of<ListMoreBloc>(context, listen: false)
+        .add(FetchMovies(widget.showedList));
   }
 
   @override
@@ -49,24 +49,24 @@ class _ListMorePageState extends State<ListMorePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<ListMoreNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.Loading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (data.state == RequestState.Loaded) {
+        child: BlocBuilder<ListMoreBloc, ListMoreState>(
+          builder: (_, state) {
+            print("ListMore State $state");
+            if (state is ListMoreInitial) {
+              //context.read<ListMoreBloc>().add(FetchMovies(widget.showedList));
+              return Center(child: CircularProgressIndicator());
+            } else if (state is StateLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if(state is ErrorMessage){
+              return
+                Center(key: Key('error_message'), child: Text(state.value));
+            } else {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final movie = data.movies[index];
+                  final movie = (state as Movies).value[index];
                   return MovieCard(movie);
                 },
-                itemCount: data.movies.length,
-              );
-            } else {
-              return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
+                itemCount: (state as Movies).value.length,
               );
             }
           },

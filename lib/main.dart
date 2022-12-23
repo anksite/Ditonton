@@ -2,19 +2,20 @@ import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/injection.dart' as di;
 import 'package:ditonton/presentation/about/about_page.dart';
-import 'package:ditonton/presentation/detail/movie_detail_notifier.dart';
-import 'package:ditonton/presentation/detail/movie_detail_page.dart';
-import 'package:ditonton/presentation/home/home_movie_page.dart';
-import 'package:ditonton/presentation/home/movie_list_notifier.dart';
-import 'package:ditonton/presentation/list_more/list_more_notifier.dart';
+import 'package:ditonton/presentation/detail/bloc/detail_bloc.dart';
+import 'package:ditonton/presentation/detail/bloc/is_watchlist_bloc.dart';
+import 'package:ditonton/presentation/detail/detail_page.dart';
+import 'package:ditonton/presentation/home/bloc/home_list_bloc.dart';
+import 'package:ditonton/presentation/home/home_page.dart';
+import 'package:ditonton/presentation/list_more/bloc/list_more_bloc.dart';
 import 'package:ditonton/presentation/list_more/list_more_page.dart';
-import 'package:ditonton/presentation/search/movie_search_notifier.dart';
+import 'package:ditonton/presentation/search/bloc/search_bloc.dart';
 import 'package:ditonton/presentation/search/search_page.dart';
-import 'package:ditonton/presentation/watchlist/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/watchlist/watchlist_movies_page.dart';
+import 'package:ditonton/presentation/watchlist/bloc/watchlist_bloc.dart';
+import 'package:ditonton/presentation/watchlist/watchlist_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'firebase_options.dart';
 
@@ -31,22 +32,25 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieListNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<HomeListBloc>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieDetailNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<DetailBloc>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieSearchNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<IsWatchlistBloc>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<ListMoreNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<SearchBloc>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<WatchlistMovieNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<ListMoreBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<WatchlistBloc>(),
         ),
       ],
       child: MaterialApp(
@@ -57,12 +61,12 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: kRichBlack,
           textTheme: kTextTheme,
         ),
-        home: HomeMoviePage(),
+        home: HomePage(),
         navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case '/home':
-              return MaterialPageRoute(builder: (_) => HomeMoviePage());
+              return MaterialPageRoute(builder: (_) => HomePage());
 
             case ListMorePage.ROUTE_NAME:
               final showedList = settings.arguments as String;
@@ -70,24 +74,23 @@ class MyApp extends StatelessWidget {
                   builder: (_) => ListMorePage(showedList: showedList),
                   settings: settings);
 
-            case MovieDetailPage.ROUTE_NAME:
+            case DetailPage.ROUTE_NAME:
               final arg = settings.arguments as List<String>;
               return MaterialPageRoute(
-                builder: (_) => MovieDetailPage(arguments: arg),
+                builder: (_) => DetailPage(arguments: arg),
                 settings: settings,
               );
 
             case SearchPage.ROUTE_NAME:
               final kind = settings.arguments as String;
               return MaterialPageRoute(
-                  builder: (_) => SearchPage(
-                        mKind: kind,
-                      ));
+                  builder: (_) =>
+                      SearchPage(mKind: kind));
 
-            case WatchlistMoviesPage.ROUTE_NAME:
+            case WatchlistPage.ROUTE_NAME:
               final kind = settings.arguments as String;
               return MaterialPageRoute(
-                  builder: (_) => WatchlistMoviesPage(mKind: kind));
+                  builder: (_) => WatchlistPage(mKind: kind));
 
             case AboutPage.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => AboutPage());
