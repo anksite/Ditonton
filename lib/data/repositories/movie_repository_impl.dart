@@ -28,6 +28,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -40,6 +44,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -52,6 +60,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -64,6 +76,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -76,6 +92,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -88,6 +108,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -100,6 +124,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -112,6 +140,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -124,6 +156,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -136,6 +172,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -148,6 +188,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 
@@ -160,6 +204,10 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException catch(e){
+      return Left(SSLFailure('Failed to verify certificate: $e'));
+    } catch (e) {
+      return Left(OtherFailure(e.toString()));
     }
   }
 

@@ -40,6 +40,7 @@ class HomeListBloc extends Bloc<HomeListEvent, HomeListState> {
       final result = await getNowPlayingMovies.execute();
       result.fold(
         (failure) {
+          print(failure.message);
           emit(NowState(RequestState.Error));
         },
         (moviesData) {
@@ -53,6 +54,7 @@ class HomeListBloc extends Bloc<HomeListEvent, HomeListState> {
       final result = await getPopularMovies.execute();
       result.fold(
         (failure) {
+          print(failure.message);
           emit(PopularState(RequestState.Error));
         },
         (moviesData) {
@@ -65,10 +67,11 @@ class HomeListBloc extends Bloc<HomeListEvent, HomeListState> {
       emit(TopRatedState(RequestState.Loading));
       final result = await getTopRatedMovies.execute();
       result.fold(
-            (failure) {
+        (failure) {
+          print(failure.message);
           emit(TopRatedState(RequestState.Error));
         },
-            (moviesData) {
+        (moviesData) {
           emit(TopRatedListData(moviesData));
         },
       );
@@ -78,10 +81,11 @@ class HomeListBloc extends Bloc<HomeListEvent, HomeListState> {
       emit(NowState(RequestState.Loading));
       final result = await getAiringTodayTv.execute();
       result.fold(
-            (failure) {
+        (failure) {
+          print(failure.message);
           emit(NowState(RequestState.Error));
         },
-            (moviesData) {
+        (moviesData) {
           emit(NowListData(moviesData));
         },
       );
@@ -91,10 +95,11 @@ class HomeListBloc extends Bloc<HomeListEvent, HomeListState> {
       emit(PopularState(RequestState.Loading));
       final result = await getPopularTv.execute();
       result.fold(
-            (failure) {
+        (failure) {
+          print(failure.message);
           emit(PopularState(RequestState.Error));
         },
-            (moviesData) {
+        (moviesData) {
           emit(PopularListData(moviesData));
         },
       );
@@ -104,14 +109,14 @@ class HomeListBloc extends Bloc<HomeListEvent, HomeListState> {
       emit(TopRatedState(RequestState.Loading));
       final result = await getTopRatedTv.execute();
       result.fold(
-            (failure) {
+        (failure) {
+          print(failure.message);
           emit(TopRatedState(RequestState.Error));
         },
-            (moviesData) {
+        (moviesData) {
           emit(TopRatedListData(moviesData));
         },
       );
     });
-
   }
 }

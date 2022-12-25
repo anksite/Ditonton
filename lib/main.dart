@@ -1,4 +1,5 @@
 import 'package:ditonton/common/constants.dart';
+import 'package:ditonton/common/pinning.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/injection.dart' as di;
 import 'package:ditonton/presentation/about/about_page.dart';
@@ -25,6 +26,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await Pinning.init();
   di.init();
   runApp(MyApp());
 }

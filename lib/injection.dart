@@ -1,4 +1,4 @@
-import 'package:ditonton/common/pinning_client.dart';
+
 import 'package:ditonton/data/datasources/db/database_helper.dart';
 import 'package:ditonton/data/datasources/movie_local_data_source.dart';
 import 'package:ditonton/data/datasources/movie_remote_data_source.dart';
@@ -26,6 +26,7 @@ import 'package:ditonton/presentation/watchlist/bloc/watchlist_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import 'common/pinning.dart';
 import 'domain/usecases/get_tv_detail.dart';
 import 'domain/usecases/get_tv_recommendations.dart';
 import 'domain/usecases/search_tv.dart';
@@ -119,5 +120,5 @@ void init() {
   locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
 
   // external
-  locator.registerLazySingleton(() => PinningClient().client);
+  locator.registerLazySingleton(() => Pinning.client);
 }
